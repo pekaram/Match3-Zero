@@ -1,7 +1,7 @@
 # Match3-Zero
 - Match3 game implemented using the allocation free [Unitasks](https://github.com/Cysharp/UniTask)
 - Left click to play
-- Any 3 > matching blocks will matched and removed, all slots will slide downwards to fill any openings
+- Any 3 >= matching blocks will matched and removed, all slots will slide downwards to fill any openings
 - Board size is dynamic and can be set in BoardFactory using Editor.
 - Tested with huge boards, performance still solid.  
 
