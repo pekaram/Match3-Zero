@@ -6,8 +6,8 @@
 - Tested with huge boards, performance still solid.  
 
 # Purpose
-- Playing Zero allocation tasks
-- This utilizes Tasks for writing clean and well structured code, all while gaining a performance boost as a bonus
+- Experimenting with zero allocation Unitasks in action
+- This utilizes the power of Tasks for writing clean and well structured code in this project, all while gaining a performance boost as a bonus
 
 ![image](https://user-images.githubusercontent.com/23138388/204269516-e7ddf039-f7d6-463e-abd5-5078ac61f26f.png)
 
