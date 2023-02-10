@@ -3,7 +3,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Pool;
 
-public class Board 
+public class Board
 {
     private readonly List<List<Slot>> _slots;
 
@@ -25,7 +25,7 @@ public class Board
         var visualUpdates = ListPool<UniTask>.Get();
         for (var row = _slots.Count - 1; row >= 0; row--)
         {
-            if (RemoveRowMatches(row, visualUpdates))
+            if (DestroyRowMatches(row, visualUpdates))
             {
                 await UniTask.WhenAll(visualUpdates);
                 visualUpdates.Clear();
@@ -35,20 +35,6 @@ public class Board
             }
         }
         ListPool<UniTask>.Release(visualUpdates);
-    }
-
-    private bool RemoveRowMatches(int row, List<UniTask> visualTasks)
-    {
-        var matches = HashSetPool<Slot>.Get();
-        var anyMatches = GetRowMatchesNonAlloc(row, matches);
-        foreach (var matchedSlot in matches)
-        {
-            matchedSlot.DestroyShape();
-            visualTasks.Add(ShiftColumn(matchedSlot));
-        }
-        HashSetPool<Slot>.Release(matches);
-
-        return anyMatches;
     }
 
     private async void OnSlotClick(Slot clickedSlot)
@@ -116,6 +102,20 @@ public class Board
         return first.ContainmentType == second.ContainmentType &&
                 second.ContainmentType == third.ContainmentType &&
                 first.ContainmentType != -1;
+    }
+
+    private bool DestroyRowMatches(int row, List<UniTask> visualTasks)
+    {
+        var matches = HashSetPool<Slot>.Get();
+        var anyMatches = GetRowMatchesNonAlloc(row, matches);
+        foreach (var matchedSlot in matches)
+        {
+            matchedSlot.DestroyShape();
+            visualTasks.Add(ShiftColumn(matchedSlot));
+        }
+        HashSetPool<Slot>.Release(matches);
+
+        return anyMatches;
     }
 
     public void Destroy()
