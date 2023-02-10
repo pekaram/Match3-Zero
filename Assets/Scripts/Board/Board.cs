@@ -20,30 +20,41 @@ public class Board
         }
     }
 
-    private async UniTask RemoveMatchingCells()
+    private async UniTask RemoveAllMatches()
     {
-        var visuals = ListPool<UniTask>.Get();
+        var visualUpdates = ListPool<UniTask>.Get();
         for (var row = _slots.Count - 1; row >= 0; row--)
         {
-            var matches = HashSetPool<Slot>.Get();
-            GetRowMatchesNonAlloc(row, matches);
-            foreach (var matchedSlot in matches)
+            if (RemoveRowMatches(row, visualUpdates))
             {
-                matchedSlot.DestroyShape();
-                visuals.Add(ShiftColumn(matchedSlot));
-            }
-            HashSetPool<Slot>.Release(matches);
-
-            if (visuals.Count > 0)
-            {  
-                await UniTask.WhenAll(visuals);
-                visuals.Clear();
+                await UniTask.WhenAll(visualUpdates);
+                visualUpdates.Clear();
 
                 // Board changed, reset pointer to look if new matches formed
                 row = _slots.Count - 1;
             }
         }
-        ListPool<UniTask>.Release(visuals);
+        ListPool<UniTask>.Release(visualUpdates);
+    }
+
+    private async UniTask UpdateRowVisually(List<UniTask> visualUpdates)
+    {
+        await UniTask.WhenAll(visualUpdates);
+        visualUpdates.Clear();
+    }
+
+    private bool RemoveRowMatches(int row, List<UniTask> visualTasks)
+    {
+        var matches = HashSetPool<Slot>.Get();
+        var anyMatches = GetRowMatchesNonAlloc(row, matches);
+        foreach (var matchedSlot in matches)
+        {
+            matchedSlot.DestroyShape();
+            visualTasks.Add(ShiftColumn(matchedSlot));
+        }
+        HashSetPool<Slot>.Release(matches);
+
+        return anyMatches;
     }
 
     private async void OnSlotClick(Slot clickedSlot)
@@ -64,7 +75,7 @@ public class Board
         _awaitingVisuals = true;
 
         await ShiftColumn(clickedSlot);
-        await RemoveMatchingCells();
+        await RemoveAllMatches();
 
         _awaitingVisuals = false;
     }
@@ -91,7 +102,7 @@ public class Board
         ListPool<UniTask>.Release(viewUpdates);
     }
 
-    private void GetRowMatchesNonAlloc(int row, HashSet<Slot> matches)
+    private bool GetRowMatchesNonAlloc(int row, HashSet<Slot> matches)
     {
         for (var column = 1; column < _slots[row].Count - 1; column++)
         {
@@ -102,6 +113,8 @@ public class Board
                 matches.Add(_slots[row][column + 1]);
             }
         }
+
+        return matches.Count > 0;
     }
 
     private bool Match3(Slot first, Slot second, Slot third)
