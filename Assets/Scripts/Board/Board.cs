@@ -30,7 +30,7 @@ public class Board
                 await UniTask.WhenAll(visualUpdates);
                 visualUpdates.Clear();
 
-                // Board changed, reset pointer to look if new matches formed
+                // Board changed, reset pointer to look if new matches have been formed
                 row = _slots.Count - 1;
             }
         }
