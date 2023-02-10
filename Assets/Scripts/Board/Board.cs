@@ -37,12 +37,6 @@ public class Board
         ListPool<UniTask>.Release(visualUpdates);
     }
 
-    private async UniTask UpdateRowVisually(List<UniTask> visualUpdates)
-    {
-        await UniTask.WhenAll(visualUpdates);
-        visualUpdates.Clear();
-    }
-
     private bool RemoveRowMatches(int row, List<UniTask> visualTasks)
     {
         var matches = HashSetPool<Slot>.Get();
