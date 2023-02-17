@@ -11,8 +11,6 @@ public class BoardFactory : MonoBehaviour
     
     private Board _board;
 
-    private ref readonly Board Board { get { return ref _board; } }
-
     private void Start()
     {
         _board = CreateBoard(_settings);
