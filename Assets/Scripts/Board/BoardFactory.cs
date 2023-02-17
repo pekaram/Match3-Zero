@@ -11,6 +11,8 @@ public class BoardFactory : MonoBehaviour
     
     private Board _board;
 
+    private ref readonly Board Board { get { return ref _board; } }
+
     private void Start()
     {
         _board = CreateBoard(_settings);
@@ -51,7 +53,7 @@ public class BoardFactory : MonoBehaviour
         return slot;
     }
 
-    private void ZoomFit(in Camera camera, in BoardSettings boardSettings)
+    private void ZoomFit(Camera camera, in BoardSettings boardSettings)
     {
         var totalHeight = boardSettings.SlotHeight * boardSettings.Rows;
         var totalWidth = boardSettings.SlotWidth * boardSettings.SlotWidth;

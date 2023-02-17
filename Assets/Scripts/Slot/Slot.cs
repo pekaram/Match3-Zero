@@ -20,7 +20,7 @@ public class Slot
 
     public event Action<Slot> OnSlotClicked;
 
-    public Slot(in GameObject slotGameObject, in Shape shape, in SlotIndex slotIndex)
+    public Slot(GameObject slotGameObject, Shape shape, in SlotIndex slotIndex)
     {
         _slotGameObject = slotGameObject;
         Shape = shape;
@@ -41,7 +41,7 @@ public class Slot
         Shape = null;
     }
 
-    public void ReceiveShape(in Shape shape)
+    public void ReceiveShape(Shape shape)
     {
         if (Shape)
         {

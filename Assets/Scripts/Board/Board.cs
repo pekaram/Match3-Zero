@@ -25,7 +25,7 @@ public class Board
         var visualUpdates = ListPool<UniTask>.Get();
         for (var row = _slots.Count - 1; row >= 0; row--)
         {
-            if (DestroyRowMatches(row, ref visualUpdates))
+            if (DestroyRowMatches(row, visualUpdates))
             {
                 await UniTask.WhenAll(visualUpdates);
                 visualUpdates.Clear();
@@ -82,7 +82,7 @@ public class Board
         ListPool<UniTask>.Release(viewUpdates);
     }
 
-    private bool GetRowMatchesNonAlloc(in int row, ref HashSet<Slot> matches)
+    private bool GetRowMatchesNonAlloc(in int row, HashSet<Slot> matches)
     {
         for (var column = 1; column < _slots[row].Count - 1; column++)
         {
@@ -97,17 +97,17 @@ public class Board
         return matches.Count > 0;
     }
 
-    private bool Match3(in Slot first, in Slot second, in Slot third)
+    private bool Match3(Slot first, Slot second, Slot third)
     {
         return first.ContainmentType == second.ContainmentType &&
                 second.ContainmentType == third.ContainmentType &&
                 first.ContainmentType != -1;
     }
 
-    private bool DestroyRowMatches(in int row, ref List<UniTask> visualTasks)
+    private bool DestroyRowMatches(in int row, List<UniTask> visualTasks)
     {
         var matches = HashSetPool<Slot>.Get();
-        var anyMatches = GetRowMatchesNonAlloc(row, ref matches);
+        var anyMatches = GetRowMatchesNonAlloc(row, matches);
         foreach (var matchedSlot in matches)
         {
             matchedSlot.DestroyShape();
