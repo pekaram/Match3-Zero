@@ -82,7 +82,7 @@ public class Board
         ListPool<UniTask>.Release(viewUpdates);
     }
 
-    private bool GetRowMatchesNonAlloc(in int row, HashSet<Slot> matches)
+    private bool GetRowMatchesNonAlloc(int row, HashSet<Slot> matches)
     {
         for (var column = 1; column < _slots[row].Count - 1; column++)
         {
@@ -104,7 +104,7 @@ public class Board
                 first.ContainmentType != -1;
     }
 
-    private bool DestroyRowMatches(in int row, List<UniTask> visualTasks)
+    private bool DestroyRowMatches(int row, List<UniTask> visualTasks)
     {
         var matches = HashSetPool<Slot>.Get();
         var anyMatches = GetRowMatchesNonAlloc(row, matches);

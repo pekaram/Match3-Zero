@@ -36,7 +36,7 @@ public class BoardFactory : MonoBehaviour
         return new Board(slots);
     }
 
-    private Slot CreateSlot(in int rowIndex, in int columnIndex, in BoardSettings boardSettings)
+    private Slot CreateSlot(int rowIndex, int columnIndex, in BoardSettings boardSettings)
     {
         var slotGameObject = Instantiate(boardSettings.SlotPrefab, boardSettings.ParentTransform);
         slotGameObject.transform.localScale = new Vector3(boardSettings.SlotWidth, boardSettings.SlotHeight, boardSettings.SlotPrefab.transform.localScale.z);
