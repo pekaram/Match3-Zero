@@ -1,10 +1,10 @@
 public struct SlotIndex
 {
-    public int Row { get; }
+    public readonly int Row { get; }
 
-    public int Column { get; }
+    public readonly int Column { get; }
 
-    public SlotIndex(int row, int column)
+    public SlotIndex(in int row, in int column)
     {
         Row = row;
         Column = column;

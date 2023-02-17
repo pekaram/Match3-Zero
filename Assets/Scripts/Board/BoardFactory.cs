@@ -18,7 +18,7 @@ public class BoardFactory : MonoBehaviour
         ZoomFit(_camera, _settings);
     }
 
-    private Board CreateBoard(BoardSettings settings)
+    private Board CreateBoard(in BoardSettings settings)
     {
         var slots = new List<List<Slot>>();
         for (var row = 0; row < settings.Rows; row++)
@@ -34,7 +34,7 @@ public class BoardFactory : MonoBehaviour
         return new Board(slots);
     }
 
-    private Slot CreateSlot(int rowIndex, int columnIndex, BoardSettings boardSettings)
+    private Slot CreateSlot(in int rowIndex, in int columnIndex, in BoardSettings boardSettings)
     {
         var slotGameObject = Instantiate(boardSettings.SlotPrefab, boardSettings.ParentTransform);
         slotGameObject.transform.localScale = new Vector3(boardSettings.SlotWidth, boardSettings.SlotHeight, boardSettings.SlotPrefab.transform.localScale.z);
@@ -51,7 +51,7 @@ public class BoardFactory : MonoBehaviour
         return slot;
     }
 
-    private void ZoomFit(Camera camera, BoardSettings boardSettings)
+    private void ZoomFit(in Camera camera, in BoardSettings boardSettings)
     {
         var totalHeight = boardSettings.SlotHeight * boardSettings.Rows;
         var totalWidth = boardSettings.SlotWidth * boardSettings.SlotWidth;
